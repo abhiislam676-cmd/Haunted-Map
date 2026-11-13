@@ -1,0 +1,214 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@import "leaflet/dist/leaflet.css";
+
+@layer base {
+  :root {
+    --font-display: 'Cormorant Garamond', 'Noto Sans Bengali', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', 'Noto Sans Bengali', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Dark-themed OpenStreetMap tile styling (applies strictly to OSM tiles, preserving markers and popups) */
+.osm-dark-map .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(195deg) brightness(90%) contrast(92%) saturate(65%);
+}
+
+.osm-dark-map .leaflet-control-attribution {
+  background: rgba(7, 7, 10, 0.8) !important;
+  color: #a1a1aa !important;
+}
+
+.osm-dark-map .leaflet-control-attribution a {
+  color: #f87171 !important;
+}
+
+/* Custom Horror-Themed Glowing Red Haunted Map Markers */
+.haunted-marker-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.haunted-marker {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.haunted-marker-core {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, #ef4444 0%, #991b1b 65%, #450a0a 100%);
+  border: 1.5px solid rgba(254, 202, 202, 0.9);
+  color: #fff5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 14px rgba(239, 68, 68, 0.95),
+    0 0 28px rgba(185, 28, 28, 0.65);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.haunted-marker:hover .haunted-marker-core {
+  transform: scale(1.2);
+}
+
+.haunted-marker-halo {
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(239, 68, 68, 0.6);
+  animation: hauntedPulse 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes hauntedPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .haunted-marker-halo {
+    animation: none;
+    opacity: 0.4;
+  }
+}
+
+/* User GPS Beacon */
+.user-location-marker {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #8b5cf6;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.9);
+}
+
+/* Pending User Submission Marker (Amber) */
+.haunted-marker-pending .haunted-marker-core {
+  background: radial-gradient(circle at 35% 30%, #f59e0b 0%, #b45309 70%, #78350f 100%);
+  border-color: rgba(254, 243, 199, 0.95);
+  box-shadow:
+    0 0 12px rgba(245, 158, 11, 0.9),
+    0 0 24px rgba(217, 119, 6, 0.55);
+}
+
+.haunted-marker-pending .haunted-marker-halo {
+  border-color: rgba(245, 158, 11, 0.65);
+}
+
+/* Google-Maps-style Draggable Drop Pin */
+.draft-pin-marker {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+.draft-pin-halo {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid rgba(16, 185, 129, 0.75);
+  animation: hauntedPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.draft-pin-core {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px 9999px 9999px 2px;
+  transform: rotate(-45deg);
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.draft-pin-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #ffffff;
+  transform: rotate(45deg);
+}
+
+/* Leaflet Popup Styling */
+.haunted-leaflet-popup .leaflet-popup-content-wrapper {
+  background: #101016;
+  color: #f4f3f6;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.75);
+  padding: 0;
+  overflow: hidden;
+}
+
+.haunted-leaflet-popup .leaflet-popup-tip {
+  background: #101016;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.haunted-leaflet-popup .leaflet-popup-content {
+  margin: 0;
+  min-width: 260px;
+}
+
+.haunted-leaflet-popup .leaflet-popup-close-button {
+  color: #e4e4e7 !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  border-radius: 9999px;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  top: 8px !important;
+  right: 8px !important;
+}
+
+/* Subtle mist shimmer */
+.glass-panel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
